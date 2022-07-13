@@ -6,28 +6,28 @@ interface Todo{
 const Input:React.FC = () =>{
   const [todo, setToDo] = useState<string>("");
   const [toList, setToDoList] = useState<Todo[]>([])
-  const handleClick = (e:React.FormEvent) =>{
+  const handleSubmit = (e:React.FormEvent) =>{
     e.preventDefault()
     if(todo){
       setToDoList([...toList,{id:Date.now(),do:todo}])
+      localStorage.setItem("todo list",JSON.stringify(toList))
     }
     setToDo("")
-    console.log("toList")
   }
   const deleteItem = (id:number) => {
     setToDoList(toList.filter((todo) => todo.id !== id))
   }
   return(
-    <div className=" w-96 flex flex-col justify-center item-center">
-      <form onSubmit={handleClick}>
-        <input onChange={(e) => setToDo(e.target.value)} value={todo} type="text" className="w-full h-8  rounded border border-black bg-gray-300" />
-        <button type="submit" className="w-1/2 h-8 mx-auto rounded text-black bg-blue-500">Add</button>
+    <div className="min-w-full mt-10">
+      <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
+        <input onChange={(e) => setToDo(e.target.value)} value={todo} type="text" className="min-w-full input input-primary" />
+        <button type="submit" className="btn btn-primary mt-2 min-w-full text-md">Add</button>
       </form>
       <div className="pt-2">
       {toList.map((item,index)=>(
-        <div key={index}>
-          <li>{item.do}</li>
-          <button className="bg-red-500 rounded px-2 mx-2" onClick={()=> deleteItem(item.id)}>Delete</button>
+        <div key={index} className="flex pt-5">
+          <li className="text-xl">{item.do}</li>
+          <button className="btn btn-secondary btn-sm mx-2" onClick={()=> deleteItem(item.id)}>Delete</button>
         </div>
       ))}
       </div>
