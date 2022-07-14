@@ -1,6 +1,7 @@
 import React,{useState} from "react"
 import Head from "next/head"
 import Input from "../components/input"
+import {BsSun,BsMoon} from "react-icons/bs"
 const Home: NextPage = () => {
   const [theme, setTheme] = useState<string>("dark")
   const toggleTheme = () => {
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
       <div className="min-w-screen border-box flex flex-col justify-center items-center">
         <div className="flex justify-between w-full">
       <h1 className="text-4xl font-semibold">ToDo</h1>
-        <button className="btn btn-secondary  btn-sm" onClick={toggleTheme}>toggleTheme</button>
+          <button className="btn btn-secondary  btn-sm" onClick={toggleTheme}>{theme === "dark" ? <BsSun/>:<BsMoon/>}</button>
         </div>
       <Input/>
     </div>

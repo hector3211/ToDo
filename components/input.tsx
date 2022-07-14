@@ -1,35 +1,24 @@
 import React,{useState} from "react"
-interface Todo{
-  id:number
-  do:string 
-}
+import useStore from "../ultils/store"
+import {TiDeleteOutline} from "react-icons/ti"
+
 const Input:React.FC = () =>{
-  const [todo, setToDo] = useState<string>("");
-  const [toList, setToDoList] = useState<Todo[]>([])
-  const handleSubmit = (e:React.FormEvent) =>{
-    e.preventDefault()
-    if(todo){
-      setToDoList([...toList,{id:Date.now(),do:todo}])
-      localStorage.setItem("todo list",JSON.stringify(toList))
-    }
-    setToDo("")
-  }
-  const deleteItem = (id:number) => {
-    setToDoList(toList.filter((todo) => todo.id !== id))
-  }
+  const store = useStore()
   return(
-    <div className="min-w-full mt-10">
-      <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
-        <input onChange={(e) => setToDo(e.target.value)} value={todo} type="text" className="min-w-full input input-primary" />
-        <button type="submit" className="btn btn-primary mt-2 min-w-full text-md">Add</button>
-      </form>
+    <div className="min-w-full mt-10 flex flex-col">
+        <input onChange={(e) => store.setNewTodo(e.target.value)} value={store.newTodo} type="text" className=" input input-primary" />
+        <button onClick={() => store.addTodo()} className="btn btn-primary mt-2 text-md">
+          Add
+        </button>
       <div className="pt-2">
-      {toList.map((item,index)=>(
-        <div key={index} className="flex pt-5">
-          <li className="text-xl">{item.do}</li>
-          <button className="btn btn-secondary btn-sm mx-2" onClick={()=> deleteItem(item.id)}>Delete</button>
-        </div>
-      ))}
+        {store.todos.map((todo) => (
+          <div key={todo.id} className="flex justify-start items-center">
+            <span className="text-3xl">{todo.text}</span>
+            <button className="btn btn-secondary btn-sm text-2xl ml-2" onClick={() => store.deleteTodo(todo.id)}>
+              <TiDeleteOutline/>
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   )
