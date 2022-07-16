@@ -12,6 +12,7 @@ interface TodoState {
   addTodo: () => void;
   setNewTodo: (text: string) => void;
   deleteTodo: (id: number) => void;
+  editTodo: (id: number, text: string) => text;
 }
 // creating the store
 const useStore = create<TodoStore>((set) => ({
@@ -38,6 +39,17 @@ const useStore = create<TodoStore>((set) => ({
     set((state) => ({
       ...state,
       todos: state.todos.filter((todo) => todo.id !== id),
+    })),
+  // edit todo
+  editTodo: (id: number, text: string) =>
+    set((state) => ({
+      ...state,
+      todos: state.todos.map((todo) => {
+        if (todo.id === id) {
+          todo.text = text;
+        }
+        return todo;
+      }),
     })),
 }));
 export default useStore;
